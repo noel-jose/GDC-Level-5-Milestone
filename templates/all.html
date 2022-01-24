@@ -1,0 +1,14 @@
+<h1>Pending Tasks</h1>
+{% for task in tasks%}
+<li>{{task}}</li>
+{% empty %}
+No pending Tasks
+{% endfor %}
+<h1>Completed Tasks</h1>
+{% for task in completed%}
+<li>{{task}}</li>
+{% empty %}
+No completed Tasks
+{% endfor %}
+<br>
+<a href="/tasks/">Go Back</a>

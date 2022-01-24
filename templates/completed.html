@@ -1,0 +1,10 @@
+<h1>Completed tasks</h1>
+<ul>
+{% for task in tasks%}
+<li>{{ task }}</li>
+{% empty %}
+No completed tasks
+{% endfor %}
+</ul>
+<br>
+<a href="/tasks/">Go Back</a>
