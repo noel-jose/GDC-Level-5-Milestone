@@ -7,7 +7,7 @@ from tasks.models import Task
 
 def task_view(request):
     search_value = request.GET.get("search")
-    tasks = Task.objects.filter(deleted=False)
+    tasks = Task.objects.filter(deleted=False, completed=False)
     if search_value:
         tasks = tasks.filter(title__icontains=search_value)
     return render(request, "task.html", {"tasks": tasks})
@@ -25,15 +25,21 @@ def delete_task_view(request, task_id):
     return HttpResponseRedirect("/tasks/")
 
 
-def complete_task_view(request, index):
-    completed_task = tasks.pop(index - 1)
-    completed.append(completed_task)
+def complete_task_view(request, task_id):
+    completed_task = Task.objects.filter(id=task_id)
+    completed_task.update(completed=True)
     return HttpResponseRedirect("/tasks/")
 
 
 def completed_task_view(request):
+    completed = Task.objects.filter(completed=True, deleted=False)
     return render(request, "completed.html", {"tasks": completed})
 
 
 def all_tasks_view(request):
-    return render(request, "all.html", {"tasks": tasks, "completed": completed})
+    tasks = Task.objects.filter(deleted=False)
+    pending_tasks = tasks.filter(completed=False)
+    completed_tasks = tasks.filter(completed=True)
+    return render(
+        request, "all.html", {"tasks": pending_tasks, "completed": completed_tasks}
+    )
